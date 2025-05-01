@@ -1,49 +1,48 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ViewStyle, ActivityIndicator } from 'react-native';
 import { useTheme } from '@/theme';
 
 interface ButtonProps {
   title: string;
   onPress: () => void;
   style?: ViewStyle;
-  textStyle?: TextStyle;
-  variant?: 'primary' | 'secondary';
+  loading?: boolean;
 }
 
-export const Button = ({ title, onPress, style, textStyle, variant = 'primary' }: ButtonProps) => {
-  const { colors, fonts } = useTheme();
+export const Button = ({ title, onPress, style, loading }: ButtonProps) => {
+  const { colors, fonts, gutters } = useTheme();
 
   return (
     <TouchableOpacity
+      onPress={onPress}
+      disabled={loading}
       style={[
         styles.button,
-        { backgroundColor: variant === 'primary' ? colors.primary : 'transparent' },
+        { backgroundColor: colors.primary },
         style,
       ]}
-      onPress={onPress}
     >
-      <Text
-        style={[
-          fonts.semiBold,
-          { color: variant === 'primary' ? 'white' : colors.primary },
-          textStyle,
-        ]}
-      >
-        {title}
-      </Text>
+      {loading ? (
+        <ActivityIndicator color="white" />
+      ) : (
+        <Text style={[styles.text, fonts.bold, { color: 'white' }]}>
+          {title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    width: '50%',
     height: 56,
     borderRadius: 16,
-    alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 'auto',
-    marginBottom: 16,
-    alignSelf: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  text: {
+    fontSize: 16,
   },
 }); 

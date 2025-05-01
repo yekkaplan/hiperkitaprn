@@ -7,17 +7,29 @@ import { useTheme } from '@/theme';
 import { Paths } from '@/navigation/paths';
 import { BackButton } from '@/components/atoms';
 import { SignInForm, InfoSection } from '@/components/molecules';
+import { authService } from '@/services/api';
 
 function SignIn({ navigation }: RootScreenProps<Paths.SignIn>) {
   const { colors, fonts, gutters, layout } = useTheme();
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBack = () => {
     navigation.goBack();
   };
 
-  const handleSignIn = () => {
-    // TODO: Implement sign in logic
+  const handleSignIn = async () => {
+    try {
+      setIsLoading(true);
+      const response = await authService.login({ email, password: 'your-password' });
+      // Handle successful login
+      console.log('Login successful:', response);
+    } catch (error) {
+      // Handle error
+      console.error('Login failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -54,6 +66,7 @@ function SignIn({ navigation }: RootScreenProps<Paths.SignIn>) {
           email={email}
           onEmailChange={setEmail}
           onSubmit={handleSignIn}
+          isLoading={isLoading}
         />
         <InfoSection />
       </View>

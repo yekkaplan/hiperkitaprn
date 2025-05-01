@@ -9,9 +9,10 @@ interface SignInFormProps {
   onEmailChange: (email: string) => void;
   onSubmit: () => void;
   style?: ViewStyle;
+  isLoading?: boolean;
 }
 
-export const SignInForm = ({ email, onEmailChange, onSubmit, style }: SignInFormProps) => {
+export const SignInForm = ({ email, onEmailChange, onSubmit, style, isLoading }: SignInFormProps) => {
   const { gutters } = useTheme();
 
   return (
@@ -28,6 +29,7 @@ export const SignInForm = ({ email, onEmailChange, onSubmit, style }: SignInForm
         title="Hemen başla!"
         onPress={onSubmit}
         style={styles.button}
+        loading={isLoading}
       />
     </View>
   );
