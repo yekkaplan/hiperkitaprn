@@ -1,6 +1,7 @@
 export const enum Paths {
   Example = 'example',
-  Startup = 'startup',
-  Onboarding = 'onboarding',
-  Login = 'login',
+  Startup = 'Startup',
+  Onboarding = 'Onboarding',
+  Login = 'Login',
+  SignIn = 'SignIn',
 }

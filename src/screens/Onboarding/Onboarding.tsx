@@ -50,12 +50,8 @@ function Onboarding({ navigation }: RootScreenProps<Paths.Onboarding>) {
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translateX.value = event.contentOffset.x;
   });
-
   const handleContinue = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: Paths.Login }],
-    });
+    navigation.navigate(Paths.SignIn);
   };
 
   const isLastSlide = (index: number) => index === SLIDES.length - 1;

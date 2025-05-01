@@ -1,13 +1,14 @@
-import type { Paths } from '@/navigation/paths';
-import type { StackScreenProps } from '@react-navigation/stack';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export type RootScreenProps<
-  S extends keyof RootStackParamList = keyof RootStackParamList,
-> = StackScreenProps<RootStackParamList, S>;
+import type { Paths } from '@/navigation/paths';
 
 export type RootStackParamList = {
   [Paths.Example]: undefined;
   [Paths.Startup]: undefined;
   [Paths.Onboarding]: undefined;
   [Paths.Login]: undefined;
+  [Paths.SignIn]: undefined;
 };
+
+export type RootScreenProps<T extends keyof RootStackParamList> =
+  NativeStackScreenProps<RootStackParamList, T>;
