@@ -32,19 +32,19 @@ export const generateFontSizes = () => {
 // Varsayılan font stilleri
 export const defaultFontStyles = {
   default: {
-    fontFamily: 'PlusJakartaSans-Regular',
+    fontFamily: 'Outfit-Regular',
   },
   heading: {
-    fontFamily: 'PlusJakartaSans-Bold',
+    fontFamily: 'Outfit-Bold',
   },
   subheading: {
-    fontFamily: 'PlusJakartaSans-SemiBold',
+    fontFamily: 'Outfit-SemiBold',
   },
   body: {
-    fontFamily: 'PlusJakartaSans-Regular',
+    fontFamily: 'Outfit-Regular',
   },
   caption: {
-    fontFamily: 'PlusJakartaSans-Light',
+    fontFamily: 'Outfit-Light',
   },
 } as const satisfies Record<string, TextStyle>;
 
@@ -58,47 +58,47 @@ export const staticFontStyles = {
   uppercase: {
     textTransform: 'uppercase',
   },
-  // Plus Jakarta Sans font ailesi
+  // Outfit font ailesi
   extraLight: {
-    fontFamily: 'PlusJakartaSans-ExtraLight',
+    fontFamily: 'Outfit-ExtraLight',
   },
   extraLightItalic: {
-    fontFamily: 'PlusJakartaSans-ExtraLightItalic',
+    fontFamily: 'Outfit-ExtraLightItalic',
   },
   light: {
-    fontFamily: 'PlusJakartaSans-Light',
+    fontFamily: 'Outfit-Light',
   },
   lightItalic: {
-    fontFamily: 'PlusJakartaSans-LightItalic',
+    fontFamily: 'Outfit-LightItalic',
   },
   regular: {
-    fontFamily: 'PlusJakartaSans-Regular',
+    fontFamily: 'Outfit-Regular',
   },
   italic: {
-    fontFamily: 'PlusJakartaSans-Italic',
+    fontFamily: 'Outfit-Italic',
   },
   medium: {
-    fontFamily: 'PlusJakartaSans-Medium',
+    fontFamily: 'Outfit-Medium',
   },
   mediumItalic: {
-    fontFamily: 'PlusJakartaSans-MediumItalic',
+    fontFamily: 'Outfit-MediumItalic',
   },
   semiBold: {
-    fontFamily: 'PlusJakartaSans-SemiBold',
+    fontFamily: 'Outfit-SemiBold',
   },
   semiBoldItalic: {
-    fontFamily: 'PlusJakartaSans-SemiBoldItalic',
+    fontFamily: 'Outfit-SemiBoldItalic',
   },
   bold: {
-    fontFamily: 'PlusJakartaSans-Bold',
+    fontFamily: 'Outfit-Bold',
   },
   boldItalic: {
-    fontFamily: 'PlusJakartaSans-BoldItalic',
+    fontFamily: 'Outfit-BoldItalic',
   },
   extraBold: {
-    fontFamily: 'PlusJakartaSans-ExtraBold',
+    fontFamily: 'Outfit-ExtraBold',
   },
   extraBoldItalic: {
-    fontFamily: 'PlusJakartaSans-ExtraBoldItalic',
+    fontFamily: 'Outfit-ExtraBoldItalic',
   },
 } as const satisfies Record<string, TextStyle>;

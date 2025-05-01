@@ -17,8 +17,8 @@ const colorsLight = {
   purple500: '#44427D',
   red500: '#C13333',
   skeleton: '#A1A1A1',
-  primary: '#ff8a00',
-  secondary : '#F6F8FE'
+  primary: '#DC4D4E',
+  secondary: '#F8F8F8',
 } as const;
 
 const colorsDark = {
@@ -32,8 +32,8 @@ const colorsDark = {
   purple500: '#A6A4F0',
   red500: '#C13333',
   skeleton: '#303030',
-  primary: '#ff8a00',
-  secondary : '#F6F8FE'
+  primary: '#DC4D4E',
+  secondary: '#1D1D2F',
 } as const;
 
 const sizes = [12, 16, 24, 32, 40, 80] as const;
