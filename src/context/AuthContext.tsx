@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { MMKV } from 'react-native-mmkv';
+import { StorageKeys } from '@/constants/storage';
 
 interface User {
   id: string;
@@ -29,8 +30,8 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage }) => {
   const [authState, setAuthState] = useState<AuthState>(() => {
-    const storedUser = storage.getString('user');
-    const storedToken = storage.getString('token');
+    const storedUser = storage.getString(StorageKeys.USER);
+    const storedToken = storage.getString(StorageKeys.TOKEN);
     
     return {
       isAuthenticated: !!storedToken,
@@ -38,7 +39,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage })
       token: storedToken ?? null,
     };
   });
-
 
   const login = useCallback(async (email: string, password: string) => {
     try {
@@ -53,8 +53,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage })
         token: 'dummy-token',
       };
 
-      storage.set('user', JSON.stringify(response.user));
-      storage.set('token', response.token);
+      storage.set(StorageKeys.USER, JSON.stringify(response.user));
+      storage.set(StorageKeys.TOKEN, response.token);
 
       setAuthState({
         isAuthenticated: true,
@@ -68,8 +68,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage })
   }, [storage]);
 
   const logout = useCallback(() => {
-    storage.delete('user');
-    storage.delete('token');
+    storage.delete(StorageKeys.USER);
+    storage.delete(StorageKeys.TOKEN);
     
     setAuthState({
       isAuthenticated: false,
@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage })
       if (!prev.user) return prev;
       
       const updatedUser = { ...prev.user, ...userData };
-      storage.set('user', JSON.stringify(updatedUser));
+      storage.set(StorageKeys.USER, JSON.stringify(updatedUser));
       
       return {
         ...prev,

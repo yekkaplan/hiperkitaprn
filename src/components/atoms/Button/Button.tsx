@@ -7,18 +7,19 @@ interface ButtonProps {
   onPress: () => void;
   style?: ViewStyle;
   loading?: boolean;
+  disabled?: boolean;
 }
 
-export const Button = ({ title, onPress, style, loading }: ButtonProps) => {
+export const Button = ({ title, onPress, style, loading, disabled }: ButtonProps) => {
   const { colors, fonts, gutters } = useTheme();
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      disabled={loading}
+      disabled={loading || disabled}
       style={[
         styles.button,
-        { backgroundColor: colors.primary },
+        { backgroundColor: disabled ? colors.gray200 : colors.primary },
         style,
       ]}
     >

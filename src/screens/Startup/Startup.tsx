@@ -9,6 +9,7 @@ import { authService } from '@/services/api/auth';
 import { ApiError } from '@/services/api/base';
 import { showToast } from '@/components/atoms/Toast/toast';
 import { storage } from '@/App';
+import { StorageKeys } from '@/constants/storage';
 
 function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
   const { fonts, colors } = useTheme();
@@ -19,7 +20,7 @@ function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
       password: 'Halkakademi1933',
     }),
     onSuccess: (data) => {
-      storage.set('appToken', JSON.stringify(data.token));
+      storage.set(StorageKeys.APP_TOKEN, JSON.stringify(data.token));
       navigation.navigate(Paths.Onboarding);
     },
     onError: (error) => {
@@ -30,7 +31,7 @@ function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
   });
 
   useEffect(() => {
-    const token = storage.getString('appToken');
+    const token = storage.getString(StorageKeys.APP_TOKEN);
     if (token) {
       navigation.navigate(Paths.Onboarding);
     } else {

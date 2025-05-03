@@ -8,6 +8,7 @@ import { Paths } from '@/navigation/paths';
 import { BackButton } from '@/components/atoms';
 import { SignInForm, InfoSection } from '@/components/molecules';
 import { authService } from '@/services/api';
+import Icon from 'react-native-vector-icons/Feather';
 
 
 function SignIn({ navigation }: AuthStackScreenProps<Paths.SignIn>) {
