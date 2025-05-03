@@ -8,6 +8,7 @@ import { Paths } from '@/navigation/paths';
 import { BackButton } from '@/components/atoms';
 import { SignInForm, InfoSection } from '@/components/molecules';
 import { authService } from '@/services/api';
+import Icon from 'react-native-vector-icons/Feather';
 
 
 function SignIn({ navigation }: AuthStackScreenProps<Paths.SignIn>) {
@@ -20,17 +21,7 @@ function SignIn({ navigation }: AuthStackScreenProps<Paths.SignIn>) {
   };
 
   const handleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      const response = await authService.login({ email, password: 'your-password' });
-      // Handle successful login
-      console.log('Login successful:', response);
-    } catch (error) {
-      // Handle error
-      console.error('Login failed:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    navigation.navigate(Paths.Login);
   };
 
   return (

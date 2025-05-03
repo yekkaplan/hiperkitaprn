@@ -35,6 +35,7 @@ import {
 import { generateGutters, staticGutterStyles } from '@/theme/gutters';
 import layout from '@/theme/layout';
 import generateConfig from '@/theme/ThemeProvider/generateConfig';
+import { StorageKeys } from '@/constants/storage';
 
 type Context = {
   changeTheme: (variant: Variant) => void;
@@ -49,14 +50,14 @@ type Properties = PropsWithChildren<{
 function ThemeProvider({ children = false, storage }: Properties) {
   // Current theme variant
   const [variant, setVariant] = useState(
-    (storage.getString('theme') ?? 'default') as Variant,
+    (storage.getString(StorageKeys.THEME) ?? 'default') as Variant,
   );
 
   // Initialize theme at default if not defined
   useEffect(() => {
-    const appHasThemeDefined = storage.contains('theme');
+    const appHasThemeDefined = storage.contains(StorageKeys.THEME);
     if (!appHasThemeDefined) {
-      storage.set('theme', 'default');
+      storage.set(StorageKeys.THEME, 'default');
       setVariant('default');
     }
   }, [storage]);
@@ -64,7 +65,7 @@ function ThemeProvider({ children = false, storage }: Properties) {
   const changeTheme = useCallback(
     (nextVariant: Variant) => {
       setVariant(nextVariant);
-      storage.set('theme', nextVariant);
+      storage.set(StorageKeys.THEME, nextVariant);
     },
     [storage],
   );

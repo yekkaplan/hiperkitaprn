@@ -1,40 +1,49 @@
 import type { RootScreenProps } from '@/navigation/types';
-
-import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Text, View, Image, StyleSheet } from 'react-native';
-
 import { Paths } from '@/navigation/paths';
 import { useTheme } from '@/theme';
-
 import { SafeScreen } from '@/components/templates';
+import { authService } from '@/services/api/auth';
+import { ApiError } from '@/services/api/base';
+import { showToast } from '@/components/atoms/Toast/toast';
+import { storage } from '@/App';
+import { StorageKeys } from '@/constants/storage';
 
 function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
-  const { fonts, gutters, layout, colors } = useTheme();
-  const { t } = useTranslation();
+  const { fonts, colors } = useTheme();
 
-  const { isError, isFetching, isSuccess } = useQuery({
-    queryFn: () => {
-      return Promise.resolve(true);
+  const { mutate: createAppToken, isPending } = useMutation({
+    mutationFn: () => authService.tokenCreate({
+      username: 'halkbank',
+      password: 'Halkakademi1933',
+    }),
+    onSuccess: (data) => {
+      storage.set(StorageKeys.APP_TOKEN, JSON.stringify(data.token));
+      navigation.navigate(Paths.Onboarding);
     },
-    queryKey: ['startup'],
+    onError: (error) => {
+      if (error instanceof ApiError) {
+        showToast(error.message, 'error', 3000);
+      }
+    },
   });
 
   useEffect(() => {
-    if (isSuccess) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: Paths.Onboarding }],
-      });
+    const token = storage.getString(StorageKeys.APP_TOKEN);
+    if (token) {
+      navigation.navigate(Paths.Onboarding);
+    } else {
+      createAppToken();
     }
-  }, [isSuccess, navigation]);
+  }, [createAppToken]);
 
   return (
     <SafeScreen>
       <View style={[styles.container, { backgroundColor: colors.primary }]}>
         <View style={styles.content}>
-          <Image 
+          <Image
             source={require('@/theme/assets/images/hiperkitap-logo-white.png')}
             style={styles.logo}
             resizeMode="contain"
@@ -43,17 +52,13 @@ function Startup({ navigation }: RootScreenProps<Paths.Startup>) {
             Türkiye'nin İlk ve En Büyük{'\n'}Dijital Kütüphanesi
           </Text>
         </View>
-        {isFetching && (
-          <ActivityIndicator 
-            size="large" 
-            color="white" 
-            style={[gutters.marginVertical_24]} 
+
+        {isPending && (
+          <ActivityIndicator
+            size="large"
+            color="white"
+            style={styles.loader}
           />
-        )}
-        {isError && (
-          <Text style={[fonts.size_16, { color: 'white' }]}>
-            {t('common_error')}
-          </Text>
         )}
       </View>
     </SafeScreen>
@@ -78,6 +83,9 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginTop: 8,
+  },
+  loader: {
+    marginVertical: 24,
   },
 });
 
