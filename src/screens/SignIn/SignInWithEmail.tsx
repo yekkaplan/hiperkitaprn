@@ -10,7 +10,7 @@ import { SignInForm, InfoSection } from '@/components/molecules';
 import { authService } from '@/services/api';
 
 
-function SignIn({ navigation }: AuthStackScreenProps<Paths.SignIn>) {
+function SignInWithEmail({ navigation }: AuthStackScreenProps<Paths.SignInWithMail>) {
   const { colors, fonts, gutters, layout } = useTheme();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,10 +34,13 @@ function SignIn({ navigation }: AuthStackScreenProps<Paths.SignIn>) {
   };
 
   return (
-    <SafeAreaView style={[layout.flex_1, { backgroundColor: colors.primary }]}>
+    <SafeAreaView style={[layout.flex_1, { backgroundColor: colors.secondary }]}>
+      
       <View style={[styles.header, gutters.paddingHorizontal_16]}>
         <BackButton onPress={handleBack} />
-      </View>
+        <Text>Giriş Yap</Text>
+     
+     </View>
 
       <View style={[layout.col]}>
         <Text
@@ -105,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default SignInWithEmail;

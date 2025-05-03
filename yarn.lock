@@ -1838,6 +1838,14 @@
     invariant "^2.2.4"
     nullthrows "^1.1.1"
 
+"@react-navigation/bottom-tabs@^7.3.11":
+  version "7.3.11"
+  resolved "https://registry.npmjs.org/@react-navigation/bottom-tabs/-/bottom-tabs-7.3.11.tgz"
+  integrity sha512-/dV2MGMNIUG/puy871JFr3sKPCG/zDTpwOQZxGajegmRkx8s1PC/A6HNmqpr0qqHdfAE9Sf95BXBFl7SE8HqXA==
+  dependencies:
+    "@react-navigation/elements" "^2.4.0"
+    color "^4.2.3"
+
 "@react-navigation/core@^7.8.4":
   version "7.8.4"
   resolved "https://registry.npmjs.org/@react-navigation/core/-/core-7.8.4.tgz"
@@ -1851,10 +1859,10 @@
     use-latest-callback "^0.2.1"
     use-sync-external-store "^1.2.2"
 
-"@react-navigation/elements@^2.3.7", "@react-navigation/elements@^2.3.8":
-  version "2.3.8"
-  resolved "https://registry.npmjs.org/@react-navigation/elements/-/elements-2.3.8.tgz"
-  integrity sha512-2ZVBtPfrkmOxzvIyDu3fPZ6aS4HcXL+TvzPDGa1znY2OP1Llo6wH14AmJHQFDquiInp2656hRMM1BkfJ3yPwew==
+"@react-navigation/elements@^2.3.7", "@react-navigation/elements@^2.3.8", "@react-navigation/elements@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.npmjs.org/@react-navigation/elements/-/elements-2.4.0.tgz"
+  integrity sha512-3gTASi9fK+Nj17pu1w58nCLELMYqOZrziO8gmTKhlFFcq7ppF5pMu+IiVOOfSVnxO74UIYMZSIhlu+fK3EG/YA==
   dependencies:
     color "^4.2.3"
 
