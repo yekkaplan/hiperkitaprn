@@ -1,7 +1,13 @@
 import type { RootScreenProps } from '@/navigation/types';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Button, Input, BackButton, IconByVariant } from '@/components/atoms';
+import {
+  Button,
+  Input,
+  BackButton,
+  IconByVariant,
+  AssetByVariant,
+} from '@/components/atoms';
 import { useTheme } from '@/theme';
 import Icon from 'react-native-vector-icons/Feather';
 import { authService } from '@/services/api/auth';
@@ -151,7 +157,13 @@ function Login({ navigation }: RootScreenProps<any>) {
         </View>
         <Button
           title="Giriş yap"
-          onPress={() => login()}
+          //   onPress={() => login()}
+          onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: Paths.Main }],
+            })
+          }
           disabled={!isValidForm}
           loading={isPending}
           style={styles.loginButton}
