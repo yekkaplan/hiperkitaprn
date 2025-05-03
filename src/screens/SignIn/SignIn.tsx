@@ -9,6 +9,7 @@ import { BackButton } from '@/components/atoms';
 import { SignInForm, InfoSection } from '@/components/molecules';
 import { authService } from '@/services/api';
 
+
 function SignIn({ navigation }: RootScreenProps<Paths.SignIn>) {
   const { colors, fonts, gutters, layout } = useTheme();
   const [email, setEmail] = useState('');
@@ -34,11 +35,11 @@ function SignIn({ navigation }: RootScreenProps<Paths.SignIn>) {
 
   return (
     <SafeAreaView style={[layout.flex_1, { backgroundColor: colors.primary }]}>
-      <View style={[styles.header, gutters.paddingHorizontal_16, gutters.paddingTop_32]}>
+      <View style={[styles.header, gutters.paddingHorizontal_16]}>
         <BackButton onPress={handleBack} />
       </View>
 
-      <View style={[styles.content, gutters.paddingHorizontal_24]}>
+      <View style={[layout.col]}>
         <Text
           style={[
             styles.title,
@@ -77,12 +78,7 @@ function SignIn({ navigation }: RootScreenProps<Paths.SignIn>) {
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-  },
-  content: {
-    position: 'absolute',
-    top: 50,
-    left: 0,
-    right: 0,
+    alignItems: 'center',
   },
   title: {
     fontSize: 32,
