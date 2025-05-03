@@ -39,6 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage })
     };
   });
 
+
   const login = useCallback(async (email: string, password: string) => {
     try {
       // API call simulation

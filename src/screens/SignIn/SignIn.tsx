@@ -20,17 +20,7 @@ function SignIn({ navigation }: AuthStackScreenProps<Paths.SignIn>) {
   };
 
   const handleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      const response = await authService.login({ email, password: 'your-password' });
-      // Handle successful login
-      console.log('Login successful:', response);
-    } catch (error) {
-      // Handle error
-      console.error('Login failed:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    navigation.navigate(Paths.Login);
   };
 
   return (
