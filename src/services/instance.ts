@@ -1,7 +1,7 @@
 import ky from 'ky';
 import { storage } from '@/App';
 
-const prefixUrl = `${process.env.API_URL ?? ''}/`;
+const prefixUrl = `https://hiperkitap-api.azurewebsites.net/`;
 
 export const instance = ky.extend({
   headers: {

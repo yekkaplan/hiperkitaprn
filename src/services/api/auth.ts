@@ -6,9 +6,16 @@ import type {
   RegisterResponse,
   ForgotPasswordRequest,
   ResetPasswordRequest,
+  TokenCreateRequest,
+  TokenCreateResponse,
 } from './types/auth';
 
 class AuthService extends BaseService {
+
+  async tokenCreate(data: TokenCreateRequest): Promise<TokenCreateResponse> {
+    return this.post<TokenCreateResponse>('token/create', data);
+  }
+
   async login(data: LoginRequest): Promise<LoginResponse> {
     return this.post<LoginResponse>('auth/login', data);
   }

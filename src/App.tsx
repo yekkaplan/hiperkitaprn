@@ -3,6 +3,8 @@ import 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MMKV } from 'react-native-mmkv';
+import React from 'react';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import ApplicationNavigator from '@/navigation/Application';
 import { ThemeProvider } from '@/theme';
@@ -22,18 +24,20 @@ export const queryClient = new QueryClient({
 
 export const storage = new MMKV();
 
-function App() {
+const App = () => {
   return (
-    <GestureHandlerRootView>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider storage={storage}>
-          <Providers storage={storage}>
-            <ApplicationNavigator />
-          </Providers>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </GestureHandlerRootView>
+    <RootSiblingParent>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider storage={storage}>
+            <Providers storage={storage}>
+              <ApplicationNavigator />
+            </Providers>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </GestureHandlerRootView>
+    </RootSiblingParent>
   );
-}
+};
 
 export default App;

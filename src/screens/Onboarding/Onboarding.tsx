@@ -36,7 +36,7 @@ function Onboarding({ navigation }: RootScreenProps<Paths.Onboarding>) {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.secondary }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.primary }]}>
       <OnboardingCarousel
         slides={SLIDES}
         imageSource={require('@/theme/assets/images/iphone13.png')}
