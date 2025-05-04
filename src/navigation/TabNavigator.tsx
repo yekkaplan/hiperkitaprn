@@ -6,6 +6,7 @@ import { HomeStack } from './stacks/HomeStack';
 import { SearchStack } from './stacks/SearchStack';
 import { LibraryStack } from './stacks/LibraryStack';
 import { ProfileStack } from './stacks/ProfileStack';
+import IconByVariant from '@/components/atoms/IconByVariant/IconByVariant';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -25,9 +26,9 @@ export function TabNavigator() {
         component={HomeStack}
         options={{
           tabBarLabel: 'Anasayfa',
-          tabBarIcon: ({ color, size }) => (
-            <Fontisto name="home" color={color} size={size} />
-          ),
+          tabBarIcon: ({ color, size, focused }) => {
+            return <IconByVariant path={focused ? 'home-active' : 'home'} />;
+          },
         }}
       />
       <Tab.Screen
@@ -35,9 +36,11 @@ export function TabNavigator() {
         component={SearchStack}
         options={{
           tabBarLabel: 'Arama',
-          tabBarIcon: ({ color, size }) => (
-            <Fontisto name="zoom" color={color} size={size} />
-          ),
+          tabBarIcon: ({ color, size, focused }) => {
+            return (
+              <IconByVariant path={focused ? 'search-active' : 'search'} />
+            );
+          },
         }}
       />
       <Tab.Screen
@@ -45,9 +48,11 @@ export function TabNavigator() {
         component={LibraryStack}
         options={{
           tabBarLabel: 'Kitaplık',
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="book" color={color} size={size} />
-          ),
+          tabBarIcon: ({ color, size, focused }) => {
+            return (
+              <IconByVariant path={focused ? 'library-active' : 'library'} />
+            );
+          },
         }}
       />
       <Tab.Screen
@@ -55,9 +60,11 @@ export function TabNavigator() {
         component={ProfileStack}
         options={{
           tabBarLabel: 'Profil',
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="user" color={color} size={size} />
-          ),
+          tabBarIcon: ({ color, size, focused }) => {
+            return (
+              <IconByVariant path={focused ? 'profile-active' : 'profile'} />
+            );
+          },
         }}
       />
     </Tab.Navigator>
