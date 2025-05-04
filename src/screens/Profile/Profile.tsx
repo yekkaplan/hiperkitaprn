@@ -1,9 +1,15 @@
-import { View, Text } from 'react-native';
+import { SafeScreen } from '@/components/templates';
+import { useAuth } from '@/context/AuthContext';
+import { View, Text, Button } from 'react-native';
 
 export default function Profile() {
+  const { logout } = useAuth();
+
   return (
-    <View>
+    <SafeScreen>
       <Text>Profile Screen</Text>
-    </View>
+
+      <Button title="Logout" onPress={() => logout()} />
+    </SafeScreen>
   );
-} 
+}

@@ -16,6 +16,7 @@ class AuthService extends BaseService {
   }
 
   async login(data: LoginRequest): Promise<LoginResponse> {
+    console.log('login called with:', data);
     return this.post<LoginResponse>('api/user/signin', data);
   }
 

@@ -1,96 +1,83 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { MMKV } from 'react-native-mmkv';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { storage } from '@/App';
 import { StorageKeys } from '@/constants/storage';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: 'admin' | 'user';
-}
+import { authService } from '@/services/api/auth';
+import { ApiError } from '@/services/api/base';
+import { showToast } from '@/components/atoms/Toast/toast';
+import type { User } from '@/types/user';
+import type { LoginResponse } from '@/services/api/auth';
 
 interface AuthState {
-  isAuthenticated: boolean;
   user: User | null;
   token: string | null;
+  isAuthenticated: boolean;
 }
 
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  updateUser: (userData: Partial<User>) => void;
+  saveSession: (data: LoginResponse) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface AuthProviderProps {
-  children: React.ReactNode;
-  storage: MMKV;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage }) => {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authState, setAuthState] = useState<AuthState>(() => {
     const storedUser = storage.getString(StorageKeys.USER);
     const storedToken = storage.getString(StorageKeys.TOKEN);
-    
     return {
-      isAuthenticated: !!storedToken,
       user: storedUser ? JSON.parse(storedUser) : null,
-      token: storedToken ?? null,
+      token: storedToken || null,
+      isAuthenticated: !!storedToken,
     };
   });
 
-  const login = useCallback(async (email: string, password: string) => {
-    try {
-      // API call simulation
-      const response = {
-        user: {
-          id: '1',
-          email,
-          name: 'Test User',
-          role: 'user' as const,
-        },
-        token: 'dummy-token',
-      };
-
-      storage.set(StorageKeys.USER, JSON.stringify(response.user));
-      storage.set(StorageKeys.TOKEN, response.token);
-
-      setAuthState({
-        isAuthenticated: true,
-        user: response.user,
-        token: response.token,
-      });
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
+  const saveSession = useCallback((data: LoginResponse) => {
+    if (!data.token || !data.user) {
+      throw new Error('Invalid login response');
     }
-  }, [storage]);
+
+    const userString = JSON.stringify(data.user);
+    storage.set(StorageKeys.USER, userString);
+    storage.set(StorageKeys.TOKEN, data.token);
+
+    setAuthState({
+      user: data.user,
+      token: data.token,
+      isAuthenticated: true,
+    });
+  }, []);
 
   const logout = useCallback(() => {
     storage.delete(StorageKeys.USER);
     storage.delete(StorageKeys.TOKEN);
-    
     setAuthState({
-      isAuthenticated: false,
       user: null,
       token: null,
+      isAuthenticated: false,
     });
-  }, [storage]);
+  }, []);
 
-  const updateUser = useCallback((userData: Partial<User>) => {
-    setAuthState(prev => {
-      if (!prev.user) return prev;
-      
-      const updatedUser = { ...prev.user, ...userData };
-      storage.set(StorageKeys.USER, JSON.stringify(updatedUser));
-      
-      return {
-        ...prev,
-        user: updatedUser,
-      };
-    });
-  }, [storage]);
+  const login = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const response = await authService.login({ email, password });
+        if (response.isSuccess && response.token && response.user) {
+          saveSession(response);
+        } else {
+          throw new Error(response.message || 'Login failed');
+        }
+      } catch (error) {
+        if (error instanceof ApiError) {
+          showToast(error.message, 'error', 3000);
+        } else {
+          showToast('Giriş yapılamadı', 'error', 3000);
+        }
+        throw error;
+      }
+    },
+    [saveSession],
+  );
 
   return (
     <AuthContext.Provider
@@ -98,18 +85,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, storage })
         ...authState,
         login,
         logout,
-        updateUser,
+        saveSession,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}; 
+}

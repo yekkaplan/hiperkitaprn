@@ -21,6 +21,7 @@ export const instance = ky.extend({
           method: request.method,
           url: request.url,
           headers: Object.fromEntries(request.headers.entries()),
+          body: request.body,
         });
         if (request.body) {
           const clonedRequest = request.clone();
@@ -49,6 +50,9 @@ export const instance = ky.extend({
     ],
     afterResponse: [
       async (request, options, response) => {
+
+
+        console.log("req")
         console.log('📥 Response:', {
           status: response.status,
           statusText: response.statusText,

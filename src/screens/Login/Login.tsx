@@ -13,12 +13,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import { authService } from '@/services/api/auth';
 import { useMutation } from '@tanstack/react-query';
 import { Paths } from '@/navigation/paths';
-import { ApiError } from '@/services/api/base';
 import { showToast } from '@/components/atoms/Toast/toast';
-import { storage } from '@/App';
-import { StorageKeys } from '@/constants/storage';
-import { version } from '../../../package.json';
 import { handleError } from '@/utils/errorHandler';
+import { useAuth } from '@/context/AuthContext';
 
 function Login({ navigation }: RootScreenProps<any>) {
   const { colors, fonts, gutters } = useTheme();
@@ -27,30 +24,56 @@ function Login({ navigation }: RootScreenProps<any>) {
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isValidForm, setIsValidForm] = useState(false);
+  const { saveSession } = useAuth();
 
   const { mutate: login, isPending } = useMutation({
     mutationFn: () =>
       authService.login({
         email: email,
         password: password,
-        language: 'tr',
+        language: 'en',
         version: '1.0.0',
       }),
-    onSuccess: (data) => {
-      console.log(data);
-      if (data.isSuccess) {
-        storage.set(StorageKeys.TOKEN, data.token!);
-        storage.set(StorageKeys.USER, JSON.stringify(data.user));
-        showToast('Giriş başarılı!', 'success', 3000);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: Paths.Main }],
-        });
+    onSuccess: async (data) => {
+      console.log('Login response:', data);
+      if (data.isSuccess && data.token && data.user) {
+        try {
+          console.log('Attempting to save session with:', {
+            user: data.user,
+            token: data.token,
+            isSuccess: true,
+          });
+          
+          await saveSession({
+            user: data.user,
+            token: data.token,
+            isSuccess: true,
+          });
+
+          console.log('Session saved successfully, navigating to Main');
+          showToast('Giriş başarılı!', 'success', 3000);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: Paths.Main }],
+          });
+        } catch (error) {
+          console.error('Session save error:', error);
+          showToast('Oturum kaydedilemedi', 'error', 3000);
+        }
       } else {
-        showToast(data.message!, 'error', 3000);
+        console.log('Login failed:', data);
+        showToast(data.message ?? 'Giriş başarısız', 'error', 3000);
       }
     },
-    onError: (error: any) => handleError(error),
+    onError: (error: any) => {
+      console.error('Login mutation error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        status: error.status,
+        response: error.response,
+      });
+      handleError(error);
+    },
   });
 
   const checkInput = () => {
@@ -157,13 +180,7 @@ function Login({ navigation }: RootScreenProps<any>) {
         </View>
         <Button
           title="Giriş yap"
-          //   onPress={() => login()}
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: Paths.Main }],
-            })
-          }
+          onPress={() => login()}
           disabled={!isValidForm}
           loading={isPending}
           style={styles.loginButton}
